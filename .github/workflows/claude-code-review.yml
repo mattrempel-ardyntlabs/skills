@@ -12,11 +12,11 @@ on:
 
 jobs:
   claude-review:
-    # Optional: Filter by PR author
-    # if: |
-    #   github.event.pull_request.user.login == 'external-contributor' ||
-    #   github.event.pull_request.user.login == 'new-developer' ||
-    #   github.event.pull_request.author_association == 'FIRST_TIME_CONTRIBUTOR'
+    # Restrict to internal contributors only. This repo is public, and this
+    # workflow runs on every PR with no @claude mention required, so without
+    # this any external PR would trigger a review run against the org's
+    # CLAUDE_CODE_OAUTH_TOKEN secret.
+    if: contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.pull_request.author_association)
 
     runs-on: ubuntu-latest
     permissions:
