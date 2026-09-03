@@ -1,0 +1,28 @@
+{
+  "supported_releases": [
+    {
+      "release": "australia",
+      "branch": "australia",
+      "chronological_order": 3,
+      "added": "2026-07-12",
+      "notes": "ArdyntLabs customer(s) on this release. Newest of the three tracked releases. ServiceNow's own retention policy keeps only the 3 most-recent release branches plus 'latest' — this branch could be deleted upstream once a newer release reaches GA."
+    },
+    {
+      "release": "zurich",
+      "branch": "zurich",
+      "chronological_order": 2,
+      "added": "2026-07-12",
+      "notes": "ArdyntLabs customer(s) on this release. Middle of the three tracked releases chronologically."
+    },
+    {
+      "release": "yokohama",
+      "branch": "yokohama",
+      "chronological_order": 1,
+      "added": "2026-07-12",
+      "notes": "ArdyntLabs customer(s) on this release. Oldest of the three tracked releases — highest risk of upstream branch deletion. If sync_release.py fails to fetch this branch, that's very likely why."
+    }
+  ],
+  "chronological_order_note": "Lower chronological_order = older release. Used to construct cross-release delta publication names: for releases A (older) and B (newer), the consolidated changelog lives in publication 'delta-<A>-<B>', stored under release B's own base/overrides data (see SKILL.md 'Cross-release questions'). Confirmed pattern as of 2026-07-13: delta-yokohama-zurich (in zurich), delta-yokohama-australia and delta-zurich-australia (in australia). Older releases not tracked here (washingtondc, xanadu) can still appear as delta sources since delta publications persist even after their source branch is retired upstream.",
+  "repo_url": "https://github.com/ServiceNow/ServiceNowDocs",
+  "schema_version": 2
+}

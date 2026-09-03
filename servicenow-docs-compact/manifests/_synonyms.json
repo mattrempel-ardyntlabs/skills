@@ -1,0 +1,115 @@
+{
+  "_comment": "Synonym groups: terms in the same group are treated as interchangeable during search_pages.py matching. If any input keyword matches a term here (case-insensitive, exact), all other terms in that group are added to the effective search. Groups map ServiceNow shorthand to the actual product/feature nouns used in doc titles and descriptions -- NOT literal letter-by-letter acronym expansions, which often fail (e.g. MACD's literal expansion 'move add change disconnect' is too generic and matches unrelated task docs; the group below maps it to the actual feature name instead).",
+  "groups": [
+    [
+      "macd",
+      "customer life cycle management",
+      "modify suspend resume disconnect"
+    ],
+    [
+      "s2p",
+      "source-to-pay",
+      "source to pay",
+      "sourcing and procurement"
+    ],
+    [
+      "pom",
+      "purchase order management"
+    ],
+    [
+      "ponr",
+      "point of no return",
+      "inflight order change"
+    ],
+    [
+      "rfq",
+      "request for quote",
+      "quoting"
+    ],
+    [
+      "cmdb",
+      "configuration management database",
+      "configuration item"
+    ],
+    [
+      "cpq",
+      "configure price quote",
+      "product configurator"
+    ],
+    [
+      "l2c",
+      "lead to cash"
+    ],
+    [
+      "spo",
+      "sourcing and procurement operations"
+    ],
+    [
+      "csm",
+      "customer service management"
+    ],
+    [
+      "itsm",
+      "it service management"
+    ],
+    [
+      "hrsd",
+      "hr service delivery",
+      "employee service management"
+    ],
+    [
+      "fsm",
+      "field service management"
+    ],
+    [
+      "grc",
+      "governance risk and compliance"
+    ],
+    [
+      "psds",
+      "public sector digital services"
+    ],
+    [
+      "orm",
+      "order management"
+    ],
+    [
+      "atf",
+      "automated test framework"
+    ],
+    [
+      "acl",
+      "access control list",
+      "access control"
+    ],
+    [
+      "prm",
+      "partner relationship management"
+    ],
+    [
+      "oob",
+      "out of the box",
+      "out-of-box"
+    ],
+    [
+      "glide record",
+      "gliderecord"
+    ],
+    [
+      "esc",
+      "employee center"
+    ],
+    [
+      "sla",
+      "service level agreement"
+    ],
+    [
+      "uib",
+      "ui builder"
+    ],
+    [
+      "sp",
+      "service portal"
+    ]
+  ]
+}
