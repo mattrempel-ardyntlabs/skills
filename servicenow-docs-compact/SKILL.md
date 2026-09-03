@@ -95,6 +95,12 @@ After presenting the relevant technical info, offer to turn it into a ready-to-u
 
 ## Maintenance - refreshing the manifest
 
+**Dependency:** `sync_release.py` (only this script, nothing else here) needs `pyyaml` to parse page frontmatter, which is not in Python's standard library. Check it's importable before running a sync:
+```bash
+python3 -c "import yaml" || python3 -m pip install pyyaml
+```
+On a Homebrew-managed Python (externally-managed-environment error from plain `pip install`), use a venv instead: `python3 -m venv .venv && .venv/bin/pip install pyyaml && .venv/bin/python3 scripts/sync_release.py <release>`.
+
 **Routine refresh (run per release, a few times a week via the scheduled task):**
 ```bash
 python3 /mnt/skills/user/servicenow-docs-compact/scripts/sync_release.py <release>
