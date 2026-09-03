@@ -1,0 +1,10 @@
+{
+  "name": "servicenow-docs-compact",
+  "description": "Search ServiceNow's official documentation across tracked release branches to ground Build Agent prompts in release-accurate technical detail.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Matt Rempel",
+    "email": "matt.rempel@ardyntlabs.com"
+  },
+  "skills": ["."]
+}

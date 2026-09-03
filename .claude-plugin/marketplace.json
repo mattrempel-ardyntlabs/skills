@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "ardynt-labs-skills",
+  "description": "Ardynt Labs ServiceNow consulting skills",
+  "owner": {
+    "name": "Matt Rempel",
+    "email": "matt.rempel@ardyntlabs.com"
+  },
+  "plugins": [
+    {
+      "name": "servicenow-docs-compact",
+      "source": "./servicenow-docs-compact",
+      "description": "Search ServiceNow's official documentation across tracked release branches to ground Build Agent prompts in release-accurate technical detail.",
+      "category": "productivity",
+      "keywords": ["servicenow", "documentation", "build-agent"]
+    }
+  ]
+}
