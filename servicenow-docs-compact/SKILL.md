@@ -7,7 +7,7 @@ description: Search ServiceNow's official AI Platform documentation (the public 
 
 Helps ArdyntLabs consultants find accurate, release-specific ServiceNow documentation and turn it into a usable Build Agent (or general ServiceNow AI Platform) prompt, without ever reading the full 250MB+ per-release doc corpus into context.
 
-All commands below use the skill's absolute path, `/mnt/skills/user/servicenow-docs-compact`. The scripts resolve their own data directory from `__file__`, so they work from any working directory, but the command itself still needs a path that exists from wherever you are.
+All commands below use `${CLAUDE_PLUGIN_ROOT}`, which Claude Code substitutes with this plugin's actual installed path wherever it appears in this file, so these commands work regardless of exact mount location or working directory. The scripts themselves resolve their own data directory from `__file__`.
 
 ## Why this exists / how it's shaped (read this before changing anything)
 
@@ -52,7 +52,7 @@ Getting this wrong is worse than usual: a prompt built from the wrong release's 
 1. **Read `manifests/catalog/<release>.json` in full** (small, ~14KB). Use the publication descriptions to pick the 1-3 most relevant publications for the question. If a description is thin or missing (`needs_description: true`), don't skip that publication just because its blurb is weak, check its title and page count too.
 2. **For each candidate publication, run the search helper rather than reading files directly:**
    ```bash
-   python3 /mnt/skills/user/servicenow-docs-compact/scripts/search_pages.py <release> <publication> <keyword1> [<keyword2> ...] --limit 10
+   python3 ${CLAUDE_PLUGIN_ROOT}/scripts/search_pages.py <release> <publication> <keyword1> [<keyword2> ...] --limit 10
    ```
    This merges base + this release's overrides in a subprocess and returns only matching entries (path/title/description/topic_type). It never puts the full `base.json` (~19MB, all publications) into context.
 
@@ -83,9 +83,9 @@ Don't decline these, the data is already indexed. ServiceNow ships consolidated 
 2. **Determine which named release is older** using `chronological_order` in `manifests/_supported_releases.json` (higher number = newer). Among the three currently tracked: yokohama (oldest), then zurich, then australia (newest).
 3. **Construct the publication name** `delta-<older>-<newer>` and search it exactly like any other publication, using the *newer* release as the `<release>` argument (that's where the data lives):
    ```bash
-   python3 /mnt/skills/user/servicenow-docs-compact/scripts/search_pages.py <newer-release> delta-<older>-<newer> <topic keywords> --limit 10
+   python3 ${CLAUDE_PLUGIN_ROOT}/scripts/search_pages.py <newer-release> delta-<older>-<newer> <topic keywords> --limit 10
    ```
-   Example: "what changed in Order Management between Yokohama and Zurich" becomes `python3 /mnt/skills/user/servicenow-docs-compact/scripts/search_pages.py zurich delta-yokohama-zurich "order management" --limit 10`
+   Example: "what changed in Order Management between Yokohama and Zurich" becomes `python3 ${CLAUDE_PLUGIN_ROOT}/scripts/search_pages.py zurich delta-yokohama-zurich "order management" --limit 10`
 4. If the user names two releases where one isn't in `_supported_releases.json`, say so, don't guess at an unindexed release's delta content.
 5. Delta publications persist even for source releases no longer separately tracked (e.g. `delta-washingtondc-australia` exists even though washingtondc no longer has a live branch). The changelog page doesn't depend on the source branch still existing.
 
@@ -103,29 +103,29 @@ On a Homebrew-managed Python (externally-managed-environment error from plain `p
 
 **Routine refresh (run per release, a few times a week via the scheduled task):**
 ```bash
-python3 /mnt/skills/user/servicenow-docs-compact/scripts/sync_release.py <release>
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/sync_release.py <release>
 ```
 Pulls just that branch, reprocesses only publications with upstream changes, reconciles against the existing base file. Cheap, safe, doesn't need other releases checked out. Publications deleted upstream are purged from base, overrides and catalog in the same pass, so search never returns pages that would 404 on fetch.
 
 **Periodic full reconcile (recommended monthly, or whenever size creeps up):**
 ```bash
-python3 /mnt/skills/user/servicenow-docs-compact/scripts/sync_release.py --full-reconcile australia zurich yokohama
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/sync_release.py --full-reconcile australia zurich yokohama
 ```
 Rebuilds base+overrides from scratch across all three. Incremental syncs alone can drift slightly out of optimal dedup over time (a page that becomes identical across releases won't be detected as shared until this runs), and this is what re-optimizes it. Hand-curated catalog descriptions are snapshotted before the rebuild and restored after, so this no longer destroys them.
 
 **After any refresh, check size:**
 ```bash
-python3 /mnt/skills/user/servicenow-docs-compact/scripts/sync_release.py --check-size
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/sync_release.py --check-size
 ```
 If this reports getting close to 30MB *or* 200 files, flag it to the user directly rather than letting the next Skills API upload silently fail. Both are real, independent constraints, not formalities. (File count is the one that actually bit this skill once already, see the architecture note above.) Run `--check-size` for the current measured state rather than trusting a number here, it drifts with every sync; as of this writing it's a handful of MB and well under 20 files, comfortable headroom under both caps. The uncompressed build of this skill sat at 24.9MB with about 5MB of headroom, which is what motivated the compressed manifests.
 
 **Working with the compressed manifests:**
 ```bash
-python3 /mnt/skills/user/servicenow-docs-compact/scripts/migrate_manifests.py --status
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/migrate_manifests.py --status
 ```
 Reports which layout is on disk and the size of each tier. To go back to plain uncompressed JSON, for instance to diff the data by hand or to rule the compression out as the cause of a problem:
 ```bash
-python3 /mnt/skills/user/servicenow-docs-compact/scripts/migrate_manifests.py --decode --prune
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/migrate_manifests.py --decode --prune
 ```
 `--encode --prune` converts back. Both directions verify every publication round-trips before deleting anything, and every script reads either layout, so nothing else needs to change when you switch. Without `--prune` both layouts are left on disk, which doubles the manifest bytes counted against the 30MB cap; `selftest.py` fails if that state is left behind.
 
@@ -133,11 +133,11 @@ Do not store the manifests as `.zip` archives, however tempting the extra compre
 
 **Before packaging for upload, and after touching any script or manifest:**
 ```bash
-python3 /mnt/skills/user/servicenow-docs-compact/scripts/selftest.py --full
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/selftest.py --full
 ```
 38 checks covering manifest integrity, search behavior, the encoded format and its round-trip, sync behavior against a synthetic git repo, and both packaging caps. Every check corresponds to a bug that actually shipped once. Without `--full` it skips the sync tests and runs in a couple of seconds. Also delete any `__pycache__` directories before packaging, since they count against the 200-file cap:
 ```bash
-find /mnt/skills/user/servicenow-docs -name __pycache__ -type d -not -path "*/.checkouts/*" | xargs rm -rf
+find ${CLAUDE_PLUGIN_ROOT} -name __pycache__ -type d -not -path "*/.checkouts/*" | xargs rm -rf
 ```
 
 **If a sync fails with a branch-not-found error:** this is very likely ServiceNow's branch retention policy. Their `llms.txt` describes keeping only the most recent release branches and deleting older ones on each new GA, though the exact number retained has varied in practice (as of 2026-09-03 the repo still carried australia, zurich, yokohama and xanadu, alongside `main`). Yokohama, being the oldest tracked release here, is at the highest risk. Tell the user plainly rather than retrying silently. They may want to archive what's already indexed for that release, since re-fetching won't be possible once the branch is gone. Verify current branches with `git ls-remote --heads https://github.com/ServiceNow/ServiceNowDocs.git` rather than assuming.
