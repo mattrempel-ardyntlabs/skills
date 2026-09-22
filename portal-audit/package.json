@@ -1,0 +1,19 @@
+{
+  "name": "portal-audit",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Read-only ServiceNow portal audit tooling for the portal-audit Claude Code skill.",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node test/smoke.mjs && node test/supersession.mjs && node test/widget-selector.mjs && node test/frontend-review-limit.mjs && node test/table-api-pagination.mjs"
+  },
+  "dependencies": {
+    "pdf-lib": "^1.17.1"
+  },
+  "optionalDependencies": {
+    "playwright": "^1.58.0"
+  }
+}

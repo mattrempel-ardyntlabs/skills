@@ -1,0 +1,101 @@
+* { box-sizing: border-box; }
+body { margin: 0; max-width: 672px; }
+.mono { font-family: var(--font-mono); font-size: 0.92em; }
+
+/* Each .chapter starts on a fresh physical page. Nothing inside is
+   height-constrained -- it takes as many physical pages as it needs.
+   That, plus break-inside:avoid on the atomic units below (finding
+   cards, table rows), is what actually prevents content splitting
+   awkwardly across a page boundary: the browser's own print pagination
+   decides where pages break, using real measured heights, instead of a
+   fixed "N items per page" guess that doesn't know how tall any given
+   item actually renders. */
+.chapter { break-before: page; }
+.chapter--first { break-before: avoid; }
+
+.eyebrow { font-family: var(--font-sans); font-weight: 500; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-muted); }
+.h2 { font-family: var(--font-display); font-weight: 700; font-size: 34px; line-height: 1.14; letter-spacing: -0.01em; margin: 6px 0 20px; color: #0C0B0A; max-width: 22ch; }
+.h2--tight { font-size: 28px; max-width: 30ch; }
+.h3 { font-family: var(--font-sans); font-weight: 600; font-size: 18px; margin: 28px 0 12px; color: #0C0B0A; }
+.lede { font-size: 15px; line-height: 1.65; color: #4A4845; max-width: 62ch; margin: 0 0 22px; }
+.p { font-size: 14px; line-height: 1.65; color: #2a2826; max-width: 64ch; margin: 0; }
+
+/* ---- Exec summary stat grid ---- */
+.summary-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin: 4px 0 30px; padding: 18px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); break-inside: avoid; }
+.summary-grid__n { font-family: var(--font-display); font-weight: 700; font-size: 30px; line-height: 1; }
+.summary-grid__l { font-size: 11px; color: var(--fg-muted); margin-top: 6px; letter-spacing: 0.02em; }
+
+/* ---- Top 3 cards ---- */
+.top3 { display: flex; flex-direction: column; gap: 12px; margin: 4px 0 24px; }
+.top3__card { border-radius: var(--r-lg); padding: 18px 22px; color: #fff; break-inside: avoid; }
+.top3__card--midnight { background: var(--c-midnight); }
+.top3__card--forest { background: var(--c-forest); }
+.top3__card--terracotta { background: var(--c-terracotta); }
+.top3__t { font-family: var(--font-sans); font-weight: 600; font-size: 15px; line-height: 1.45; margin: 8px 0 6px; max-width: 68ch; }
+.top3__sub { font-size: 12px; color: rgba(255,255,255,0.75); margin: 0; }
+
+/* ---- Callout ---- */
+.callout { border-radius: var(--r-md); padding: 15px 18px; font-size: 13px; line-height: 1.6; break-inside: avoid; }
+.callout--warn { background: var(--c-nest); border-left: 4px solid var(--c-terracotta); color: #2a2826; }
+
+/* ---- Bar chart ---- */
+.bar-chart { display: flex; flex-direction: column; gap: 13px; margin: 8px 0 22px; }
+.bar-row { display: grid; grid-template-columns: 200px 1fr 26px; align-items: center; gap: 12px; break-inside: avoid; }
+.bar-row__label { font-size: 12px; font-weight: 500; color: #2a2826; }
+.bar-row__track { display: flex; height: 20px; border-radius: 5px; overflow: hidden; background: var(--c-sky); }
+.bar__seg { height: 100%; }
+.bar-row__n { font-family: var(--font-mono); font-size: 11.5px; color: var(--fg-muted); text-align: right; }
+.legend { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 6px; }
+.legend__item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--fg-muted); }
+.legend__swatch { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+
+/* ---- Pills / badges ---- */
+.pill { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: 0.02em; padding: 3px 9px; border-radius: 999px; white-space: nowrap; }
+.ev-badge { display: inline-block; font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.06em; padding: 3px 7px; border-radius: 6px; background: var(--c-sky); color: #4A4845; text-transform: uppercase; white-space: nowrap; }
+.ev-badge--rendered { background: var(--c-mist); }
+.ev-badge--config { background: var(--c-sky); }
+.ev-badge--inferred { background: var(--c-silica); }
+.ev-badge--usage { background: var(--c-nest); }
+
+/* ---- Finding cards (High severity spotlight) ----
+   break-inside:avoid is the actual fix: each card either fits entirely
+   on the current page, or moves whole to the next one. Nothing here
+   forces exactly N cards per page. */
+.finding-stack { display: flex; flex-direction: column; gap: 20px; }
+.finding-card { border: 1px solid var(--border); border-radius: var(--r-lg); padding: 20px 22px; break-inside: avoid; }
+.finding-card__head { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.finding-card__section { font-family: var(--font-mono); font-size: 9.5px; color: var(--fg-subtle); text-transform: uppercase; letter-spacing: 0.08em; margin-left: auto; }
+.finding-card__title { font-family: var(--font-sans); font-weight: 600; font-size: 16px; line-height: 1.35; margin: 0 0 8px; color: #0C0B0A; }
+.finding-card__desc { font-size: 13px; line-height: 1.6; color: #2a2826; margin: 0 0 12px; }
+.finding-card__shot { max-width: 100%; max-height: 380px; width: auto; height: auto; border-radius: var(--r-sm); border: 1px solid var(--border); margin: 4px auto 14px; display: block; object-fit: contain; }
+.finding-card__evidence, .finding-card__remediation, .finding-card__caveat { font-size: 11.5px; line-height: 1.55; margin: 0 0 8px; color: #4A4845; }
+.finding-card__k { font-weight: 600; color: #0C0B0A; }
+.finding-card__caveat { font-style: italic; color: var(--fg-subtle); }
+.stat-inline { display: flex; align-items: baseline; gap: 8px; margin: 4px 0 12px; }
+.stat-inline__n { font-family: var(--font-display); font-weight: 700; font-size: 24px; color: var(--c-terracotta); }
+.stat-inline__of { font-size: 13px; font-weight: 400; color: var(--fg-muted); }
+.stat-inline__l { font-size: 11px; color: var(--fg-muted); }
+
+/* ---- Findings table (Medium/Low/Info condensed) ----
+   A real <thead> repeats on every physical page the table spans
+   (Chromium print behavior); tr break-inside:avoid keeps one row from
+   splitting across pages. */
+.findings-table { width: 100%; border-collapse: collapse; margin-top: 4px; }
+.findings-table th { text-align: left; font-weight: 600; font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--fg-muted); padding: 8px 10px 8px 0; border-bottom: 1.5px solid #0C0B0A; background: #fff; }
+.findings-table td { padding: 11px 10px 11px 0; border-bottom: 1px solid var(--border); font-size: 12px; vertical-align: top; }
+.findings-table tr { break-inside: avoid; }
+.findings-table__desc { color: #4A4845; margin-top: 4px; font-size: 11px; line-height: 1.5; }
+.findings-table--legend td { padding: 12px 12px 12px 0; font-size: 12.5px; break-inside: avoid; }
+
+/* ---- Gallery ---- */
+.gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 8px; }
+.gallery__item { margin: 0; border: 1px solid var(--border); border-radius: var(--r-md); overflow: hidden; break-inside: avoid; }
+.gallery__item img { width: 100%; height: 210px; object-fit: cover; object-position: top; display: block; }
+.gallery__item figcaption { font-size: 10.5px; color: var(--fg-muted); padding: 9px 11px; line-height: 1.5; }
+
+/* ---- Next steps ---- */
+.next-steps { margin: 18px 0 40px; display: flex; flex-direction: column; gap: 15px; }
+.next-steps > div { display: flex; gap: 16px; align-items: flex-start; font-size: 14px; color: #0C0B0A; line-height: 1.55; break-inside: avoid; }
+.next-steps__n { width: 32px; height: 32px; border-radius: 999px; background: var(--c-midnight); color: var(--c-yellow); display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; font-family: var(--font-display); }
+.next-steps__sign { margin-top: 36px; padding-top: 18px; border-top: 1px solid var(--border-strong); }
+.next-steps__line { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 10px; color: #0C0B0A; letter-spacing: 0.1em; }

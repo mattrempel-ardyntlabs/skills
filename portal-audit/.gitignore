@@ -1,0 +1,6 @@
+# Audit run folders hold raw instance responses and screenshots of real customer
+# data. Never commit them. See reference/13-data-access.md (Retention).
+portal-audit-runs/
+
+node_modules/
+.DS_Store

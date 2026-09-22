@@ -1,0 +1,261 @@
+/* ============================================================
+   Ardynt Labs — Core color + type tokens
+   Source of truth: Brand guidelines (Jan 2026) + Figma Brand Book.
+   ============================================================ */
+
+/* -- Fonts ---------------------------------------------------- */
+/* Recoleta Alt — full weight range from foundry OTF files. */
+@font-face { font-family: "Recoleta Alt"; font-weight: 100; font-style: normal; font-display: swap;
+  src: url("fonts/recoletaalt-thin.otf") format("opentype"); }
+@font-face { font-family: "Recoleta Alt"; font-weight: 300; font-style: normal; font-display: swap;
+  src: url("fonts/recoletaalt-light.otf") format("opentype"); }
+@font-face { font-family: "Recoleta Alt"; font-weight: 400; font-style: normal; font-display: swap;
+  src: url("fonts/recoletaalt-regular.otf") format("opentype"); }
+@font-face { font-family: "Recoleta Alt"; font-weight: 500; font-style: normal; font-display: swap;
+  src: url("fonts/recoletaalt-medium.otf") format("opentype"); }
+@font-face { font-family: "Recoleta Alt"; font-weight: 600; font-style: normal; font-display: swap;
+  src: url("fonts/recoletaalt-semibold.otf") format("opentype"); }
+@font-face { font-family: "Recoleta Alt"; font-weight: 700; font-style: normal; font-display: swap;
+  src: url("fonts/recoletaalt-bold.otf") format("opentype"); }
+@font-face { font-family: "Recoleta Alt"; font-weight: 900; font-style: normal; font-display: swap;
+  src: url("fonts/recoletaalt-black.otf") format("opentype"); }
+
+@font-face { font-family: "Poppins"; font-weight: 300; font-style: normal;
+  src: url("fonts/Poppins-Light.ttf") format("truetype"); font-display: swap; }
+@font-face { font-family: "Poppins"; font-weight: 400; font-style: normal;
+  src: url("fonts/Poppins-Regular.ttf") format("truetype"); font-display: swap; }
+@font-face { font-family: "Poppins"; font-weight: 400; font-style: italic;
+  src: url("fonts/Poppins-Italic.ttf") format("truetype"); font-display: swap; }
+@font-face { font-family: "Poppins"; font-weight: 500; font-style: normal;
+  src: url("fonts/Poppins-Medium.ttf") format("truetype"); font-display: swap; }
+@font-face { font-family: "Poppins"; font-weight: 500; font-style: italic;
+  src: url("fonts/Poppins-MediumItalic.ttf") format("truetype"); font-display: swap; }
+@font-face { font-family: "Poppins"; font-weight: 600; font-style: normal;
+  src: url("fonts/Poppins-SemiBold.ttf") format("truetype"); font-display: swap; }
+@font-face { font-family: "Poppins"; font-weight: 700; font-style: normal;
+  src: url("fonts/Poppins-Bold.ttf") format("truetype"); font-display: swap; }
+
+
+:root {
+  /* ---------- PRIMARY ---------- */
+  --c-black:          #0C0B0A;   /* brand black (text) */
+  --c-ink:            #000000;   /* true black for lockups */
+  --c-white:          #FFFFFF;
+  --c-yellow:         #EFB901;   /* Weaver Yellow — THE signature color */
+  --c-yellow-deep:    #D8A600;   /* hover/pressed */
+
+  /* ---------- NEUTRALS (cards, surfaces) ---------- */
+  --c-sky:            #F1F4F4;
+  --c-nest:           #E4DFB7;   /* pairs w/ yellow */
+  --c-silica:         #EDE7E0;
+  --c-bone:           #DFD5CA;   /* variant neutral (from palette fig) */
+  --c-mist:           #E4EDED;   /* variant neutral */
+
+  /* ---------- SECONDARIES (pairs, pattern backgrounds) ---------- */
+  --c-forest:         #034248;
+  --c-forest-deep:    #00353A;
+  --c-midnight:       #201C3C;
+  --c-midnight-mid:   #2B2842;
+  --c-midnight-deep:  #171430;
+  --c-terracotta:     #A35E22;
+  --c-terracotta-deep:#9A561C;
+
+  /* ---------- SEMANTIC ---------- */
+  --fg:               var(--c-black);
+  --fg-muted:         #4A4845;
+  --fg-subtle:        #7A7773;
+  --fg-on-dark:       var(--c-white);
+  --fg-on-yellow:     var(--c-black);
+
+  --bg:               var(--c-white);
+  --bg-alt:           var(--c-silica);
+  --bg-dark:          var(--c-midnight);
+  --bg-deep:          var(--c-forest);
+  --bg-accent:        var(--c-yellow);
+
+  --border:           rgba(12, 11, 10, 0.12);
+  --border-strong:    rgba(12, 11, 10, 0.28);
+  --border-on-dark:   rgba(255, 255, 255, 0.14);
+
+  --accent:           var(--c-yellow);
+  --accent-fg:        var(--c-black);
+  --link:             var(--c-black);
+  --link-hover:       var(--c-terracotta);
+
+  /* ---------- TYPEFACES ---------- */
+  --font-display:     "Recoleta Alt", "Recoleta", Georgia, "Times New Roman", serif;
+  --font-sans:        "Poppins", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono:        ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+
+  /* ---------- TYPE SCALE ----------
+     H1 is ALWAYS Recoleta Alt. Subsequent headers are Poppins SemiBold.
+     Body is Poppins Regular. Scale is editorial: generous, not techy. */
+  --fs-display:       clamp(3.75rem, 6vw, 7.5rem);  /* 60-120 — hero only */
+  --fs-h1:            clamp(2.75rem, 4vw, 4.5rem);  /* 44-72  — Recoleta */
+  --fs-h2:            clamp(2rem,   2.8vw, 3rem);   /* 32-48  — Poppins 600 */
+  --fs-h3:            1.75rem;                      /* 28 */
+  --fs-h4:            1.375rem;                     /* 22 */
+  --fs-h5:            1.125rem;                     /* 18 */
+  --fs-body:          1rem;                         /* 16 */
+  --fs-sm:            0.875rem;                     /* 14 */
+  --fs-xs:            0.75rem;                      /* 12 */
+  --fs-eyebrow:       0.75rem;                      /* 12 — uppercase track */
+
+  --lh-tight:         1.05;
+  --lh-snug:          1.2;
+  --lh-normal:        1.5;
+  --lh-loose:         1.7;
+
+  --tracking-tight:   -0.02em;
+  --tracking-normal:  0;
+  --tracking-eyebrow: 0.14em;
+
+  /* ---------- SPACING (8pt-ish, editorial rhythm) ---------- */
+  --s-1:  4px;
+  --s-2:  8px;
+  --s-3:  12px;
+  --s-4:  16px;
+  --s-5:  24px;
+  --s-6:  32px;
+  --s-7:  48px;
+  --s-8:  64px;
+  --s-9:  96px;
+  --s-10: 128px;
+  --s-11: 192px;
+
+  /* ---------- RADII ---------- */
+  --r-xs: 4px;
+  --r-sm: 8px;
+  --r-md: 14px;
+  --r-lg: 24px;
+  --r-xl: 32px;
+  --r-2xl: 48px;       /* big editorial cards (mirrors figma 27-55px) */
+  --r-pill: 999px;
+
+  /* ---------- SHADOWS (restrained; editorial) ---------- */
+  --shadow-xs: 0 1px 2px rgba(12,11,10,0.04);
+  --shadow-sm: 0 2px 6px rgba(12,11,10,0.06), 0 1px 2px rgba(12,11,10,0.04);
+  --shadow-md: 0 8px 24px rgba(12,11,10,0.08), 0 2px 6px rgba(12,11,10,0.04);
+  --shadow-lg: 0 24px 48px rgba(12,11,10,0.12), 0 4px 12px rgba(12,11,10,0.06);
+  --shadow-inset: inset 0 0 0 1px rgba(12,11,10,0.06);
+
+  /* ---------- MOTION ---------- */
+  --ease-standard: cubic-bezier(0.2, 0.6, 0.2, 1);
+  --ease-enter:    cubic-bezier(0, 0, 0.2, 1);
+  --ease-exit:     cubic-bezier(0.4, 0, 1, 1);
+  --dur-quick:     120ms;
+  --dur-base:      220ms;
+  --dur-slow:      420ms;
+
+  /* ---------- LAYOUT ---------- */
+  --container:     1240px;
+  --container-wide:1440px;
+  --gutter:        24px;
+}
+
+/* Dark surface defaults (drop a .on-dark on any parent) */
+.on-dark {
+  --fg: var(--fg-on-dark);
+  --fg-muted: rgba(255,255,255,0.72);
+  --fg-subtle: rgba(255,255,255,0.54);
+  --bg: var(--c-midnight);
+  --border: rgba(255,255,255,0.14);
+  --border-strong: rgba(255,255,255,0.28);
+  color: var(--fg);
+  background: var(--bg);
+}
+
+/* ============================================================
+   Element defaults — the baseline hierarchy.
+   Drop this CSS on any page and basic tags look on-brand.
+   ============================================================ */
+
+html { color-scheme: light; }
+body {
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh-normal);
+  color: var(--fg);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  text-wrap: pretty;
+}
+
+h1, .h1 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--fs-h1);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tracking-tight);
+  margin: 0 0 var(--s-5);
+  text-wrap: balance;
+}
+h2, .h2 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: var(--fs-h2);
+  line-height: var(--lh-snug);
+  letter-spacing: -0.01em;
+  margin: 0 0 var(--s-4);
+  text-wrap: balance;
+}
+h3, .h3 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: var(--fs-h3);
+  line-height: var(--lh-snug);
+  margin: 0 0 var(--s-3);
+}
+h4, .h4 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: var(--fs-h4);
+  line-height: var(--lh-snug);
+  margin: 0 0 var(--s-3);
+}
+h5, .h5 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: var(--fs-h5);
+  line-height: var(--lh-snug);
+  margin: 0 0 var(--s-2);
+}
+p { margin: 0 0 var(--s-4); }
+
+.eyebrow {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: var(--fs-eyebrow);
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+
+.lede {
+  font-family: var(--font-sans);
+  font-size: 1.25rem;
+  line-height: var(--lh-normal);
+  color: var(--fg-muted);
+  max-width: 62ch;
+}
+
+small, .sm { font-size: var(--fs-sm); }
+code, .mono { font-family: var(--font-mono); font-size: 0.9em; }
+
+a {
+  color: var(--link);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: color var(--dur-quick) var(--ease-standard);
+}
+a:hover { color: var(--link-hover); }
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--border);
+  margin: var(--s-7) 0;
+}
+
+::selection { background: var(--c-yellow); color: var(--c-black); }
