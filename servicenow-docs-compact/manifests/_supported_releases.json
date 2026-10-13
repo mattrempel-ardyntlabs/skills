@@ -24,5 +24,7 @@
   ],
   "chronological_order_note": "Lower chronological_order = older release. Used to construct cross-release delta publication names: for releases A (older) and B (newer), the consolidated changelog lives in publication 'delta-<A>-<B>', stored under release B's own base/overrides data (see SKILL.md 'Cross-release questions'). Confirmed pattern as of 2026-07-13: delta-yokohama-zurich (in zurich), delta-yokohama-australia and delta-zurich-australia (in australia). Older releases not tracked here (washingtondc, xanadu) can still appear as delta sources since delta publications persist even after their source branch is retired upstream.",
   "repo_url": "https://github.com/ServiceNow/ServiceNowDocs",
+  "default_release": "australia",
+  "default_release_note": "Release assumed when the user doesn't name one (see SKILL.md Step 1). Must be one of supported_releases; selftest.py checks this. Update it when a newer release becomes the one most work targets.",
   "schema_version": 2
 }

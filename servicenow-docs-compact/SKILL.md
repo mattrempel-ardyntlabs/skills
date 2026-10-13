@@ -39,12 +39,12 @@ references/
 
 ## Step 1 - Determine which release the user means
 
-Getting this wrong is worse than usual: a prompt built from the wrong release's docs can reference syntax or features that don't exist on the customer's actual instance. Don't guess.
+A prompt built from the wrong release's docs can reference syntax or features that don't exist on the customer's actual instance, so the release in use should always be visible to the user. But don't ask for it: the user has asked not to be prompted for a release on every question.
 
-1. Check `manifests/_supported_releases.json` for the current list (currently australia, zurich, yokohama, but check, don't hardcode this).
+1. Check `manifests/_supported_releases.json` for the current list (currently australia, zurich, yokohama, but check, don't hardcode this) and its `default_release` (currently australia).
 2. If the message already states or clearly implies the release ("our Zurich customer...", "targeting Yokohama"), use it.
-3. If not stated, ask once, before doing any retrieval: "Which release is this for, Australia, Zurich, or Yokohama?"
-4. Once established, treat it as the working release for the rest of the session, don't re-ask on every message.
+3. If not stated, use `default_release` without asking, and say so in one short line at the top of the answer (e.g. "Using Australia docs, tell me if this is for a different release."), so a wrong assumption is easy to catch and correct.
+4. Once established, by the user or by the default, treat it as the working release for the rest of the session, don't re-announce or re-ask on every message. Switch as soon as the user names a different release.
 5. If the user names a release that isn't in the supported list, say so plainly. Do not silently substitute the nearest available release's docs. That's the one place a quiet fallback would actively mislead someone. `search_pages.py` also rejects unknown release names outright rather than returning an empty result that looks like "no docs on this topic".
 
 ## Step 2 - Retrieve relevant docs (narrow at every step)
@@ -135,7 +135,7 @@ Do not store the manifests as `.zip` archives, however tempting the extra compre
 ```bash
 python3 ${CLAUDE_PLUGIN_ROOT}/scripts/selftest.py --full
 ```
-38 checks covering manifest integrity, search behavior, the encoded format and its round-trip, sync behavior against a synthetic git repo, and both packaging caps. Every check corresponds to a bug that actually shipped once. Without `--full` it skips the sync tests and runs in a couple of seconds. Also delete any `__pycache__` directories before packaging, since they count against the 200-file cap:
+40 checks covering manifest integrity, search behavior, the encoded format and its round-trip, sync behavior against a synthetic git repo, and both packaging caps. Every check corresponds to a bug that actually shipped once. Without `--full` it skips the sync tests and runs in a couple of seconds. Also delete any `__pycache__` directories before packaging, since they count against the 200-file cap:
 ```bash
 find ${CLAUDE_PLUGIN_ROOT} -name __pycache__ -type d -not -path "*/.checkouts/*" | xargs rm -rf
 ```
@@ -144,7 +144,7 @@ find ${CLAUDE_PLUGIN_ROOT} -name __pycache__ -type d -not -path "*/.checkouts/*"
 
 ## Adding a new release later
 
-1. Add an entry to `manifests/_supported_releases.json`.
+1. Add an entry to `manifests/_supported_releases.json`. If the new release is now the one most work targets, also point `default_release` at it.
 2. Run `sync_release.py --full-reconcile` including the new release alongside the existing ones.
 3. Run `--check-size` immediately after. With compressed manifests a fourth release costs roughly 0.5MB of overrides plus whatever new base entries it introduces, so this is comfortable now rather than tight, but check rather than assume.
 4. Run `selftest.py --full` to confirm nothing regressed.
