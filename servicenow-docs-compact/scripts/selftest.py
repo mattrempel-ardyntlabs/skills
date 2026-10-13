@@ -50,6 +50,9 @@ def test_data_integrity():
     print("\nManifest data integrity")
     releases = [r["release"] for r in load(MANIFESTS / "_supported_releases.json", {}).get("supported_releases", [])]
     check("supported releases present", bool(releases), "check _supported_releases.json")
+    default = load(MANIFESTS / "_supported_releases.json", {}).get("default_release")
+    check("default_release is a supported release", default in releases,
+          f"{default!r} not in {releases}")
 
     fmt = mio.active_format(SKILL_DIR)
     print(f"  info manifest format on disk: {fmt}")
