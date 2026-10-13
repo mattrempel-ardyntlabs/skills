@@ -220,6 +220,23 @@ def test_sync():
         check("deleted publication purged from base", not stale, str(stale))
         check("deleted publication purged from catalog", "build-workflows" not in catalog)
         check("deleted publication purged from overrides", not overrides.get("build-workflows"))
+
+        # A publication that is a bare index.md stub in one release must not
+        # take another release's shared base pages down with it. Full
+        # reconcile first so australia's pages live in base, not its override.
+        sync("--full-reconcile", "australia")
+        git_repo = lambda *a: subprocess.run(["git", *a], cwd=repo, check=True, capture_output=True)
+        git_repo("checkout", "-q", "-b", "zurich")
+        for p in (repo / "markdown/order-management").glob("*.md"):
+            if p.name != "index.md":
+                p.unlink()
+        git_repo("add", "-A")
+        git_repo("commit", "-qm", "zurich stub")
+        r = sync("zurich")
+        base = mio.load_all(work, "base")
+        kept = [p for p, e in base.get("order-management", {}).items() if "australia" in e.get("releases", [])]
+        check("stub publication in one release keeps other releases' base pages",
+              r.returncode == 0 and len(kept) > 0, f"{len(kept)} australia base pages left")
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
 

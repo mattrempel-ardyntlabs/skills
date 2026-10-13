@@ -398,7 +398,14 @@ def sync_incremental(release, branch, repo_url, skill_dir):
             # search would offer it as a candidate publication with nothing
             # in it, and a stale curated description would describe content
             # that no longer exists.
-            base_all.pop(pub, None)
+            # Only this release's share is purged. base is shared across
+            # releases, and the deletion pass above has already untagged this
+            # release from it, so whatever is left belongs to other releases.
+            # Popping the whole publication here once wiped australia's 141
+            # base pages for industrial-connected-workforce because zurich's
+            # copy of it is a bare index.md stub.
+            if not base:
+                base_all.pop(pub, None)
             overrides_all.pop(pub, None)
             cat_path = manifests_root(skill_dir) / "catalog" / f"{release}.json"
             catalog = load_json(cat_path, {})
